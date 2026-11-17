@@ -2,7 +2,7 @@
   "metal": {
     "eff": 0.568,
     "err_pct": 15,
-    "runs": 1,
+    "runs": 2,
     "machines": 1
   }
 }

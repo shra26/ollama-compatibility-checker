@@ -1,0 +1,33 @@
+{
+  "schema": 1,
+  "date": "2026-11-17",
+  "tool_version": "workflow-test",
+  "ollama_version": "0.24.0",
+  "os": "darwin",
+  "arch": "arm64",
+  "cpu": "Apple M1",
+  "ram_bytes": 8589934592,
+  "ram_bandwidth_gbs": 68.25,
+  "unified_memory": true,
+  "gpu": {
+    "vendor": "apple",
+    "name": "Apple M1",
+    "backend": "metal",
+    "vram_bytes": 5669356830,
+    "bandwidth_gbs": 68.25,
+    "bandwidth_low_confidence": false
+  },
+  "runs": [
+    {
+      "tag": "qwen2.5:3b-instruct-q4_K_M",
+      "size_bytes": 1929903008,
+      "active_ratio": 1,
+      "ctx": 8192,
+      "est_tok_s": 22.986906500536424,
+      "measured_tok_s": 20.09220295611647,
+      "prefill_tok_s": 1477.6247120729674,
+      "est_gpu_fraction": 1,
+      "measured_gpu_fraction": 1
+    }
+  ]
+}

@@ -14,6 +14,7 @@ type Probes struct {
 	SysRoot string // root of /proc and /sys on Linux; "/" if empty
 	GOOS    string
 	GOARCH  string
+	Vulkan  bool // treat Intel/unsupported AMD GPUs as experimental Vulkan devices
 }
 
 // MergeGPUs pools supported GPUs of one vendor into a single entry (sum of
@@ -143,6 +144,15 @@ func Detect(ctx context.Context, p Probes) Hardware {
 		hw.UnifiedMemory = len(g) > 0 && g[0].Backend == "metal"
 	default:
 		warn("unsupported OS %q, hardware detection skipped", p.GOOS)
+	}
+
+	// Intel Macs run on CPU; Vulkan is not an option there.
+	if p.Vulkan && p.GOOS != "darwin" {
+		var vw []string
+		before := gpus
+		gpus, vw = EnableVulkan(gpus, hw.RAMBytes, RAMBandwidthFallback(p.GOOS, p.GOARCH))
+		hw.Warnings = dropUnsupportedWarnings(hw.Warnings, before, gpus)
+		hw.Warnings = append(hw.Warnings, vw...)
 	}
 
 	merged, w := MergeGPUs(gpus)

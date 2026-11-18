@@ -267,8 +267,11 @@ card unsupported. Only ROCm-supported cards (for example RX 6800 and newer,
 RX 7000, RX 9000, Instinct MI) are treated as GPUs.
 
 **Intel GPU or older AMD GPU shows `not used by Ollama`.** Ollama does not
-use these through CUDA or ROCm, so the tool estimates them as CPU. Ollama's
-experimental Vulkan backend may use them; run `bench` to measure.
+use these through CUDA or ROCm, so the tool estimates them as CPU. Pass
+`--vulkan` (for example `ollama-compat --vulkan`) to estimate them on
+Ollama's experimental Vulkan backend instead; set `OLLAMA_VULKAN=1` as shown
+in the config block, and run `bench` to measure real speed. Integrated GPUs
+are assumed to share system RAM, so those estimates are rough.
 
 **Speeds in practice are much lower than the estimate.** Estimates assume
 the machine is otherwise idle. Close memory-heavy apps and try again, and use

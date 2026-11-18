@@ -13,13 +13,16 @@ import (
 // version is set at build time via -ldflags "-X main.version=...".
 var version = "dev"
 
+// vulkanFlag is set by --vulkan and read by hostDetect.
+var vulkanFlag bool
+
 // detectFunc profiles the host. Commands take it as a parameter so tests can
 // inject synthetic hardware.
 type detectFunc func(context.Context) hw.Hardware
 
 // hostDetect profiles the real machine.
 func hostDetect(ctx context.Context) hw.Hardware {
-	return hw.Detect(ctx, hw.Probes{Run: hw.DefaultRunner, SysRoot: "/", GOOS: runtime.GOOS, GOARCH: runtime.GOARCH})
+	return hw.Detect(ctx, hw.Probes{Run: hw.DefaultRunner, SysRoot: "/", GOOS: runtime.GOOS, GOARCH: runtime.GOARCH, Vulkan: vulkanFlag})
 }
 
 // newRootCmd builds the root command wired to the real host.
@@ -51,6 +54,7 @@ func newRootCmdEnv(stdout, stderr io.Writer, detect detectFunc, env benchEnv) *c
 	pf.Bool("json", false, "emit machine-readable JSON")
 	pf.String("catalog", "", "path to a custom model catalog file")
 	pf.Bool("no-color", false, "disable colored output")
+	pf.BoolVar(&vulkanFlag, "vulkan", false, "estimate Intel and unsupported AMD GPUs on Ollama's experimental Vulkan backend")
 	addRecommendFlags(cmd)
 
 	cmd.AddCommand(newScanCmd(detect), newRecommendCmd(detect), newCatalogCmd(), newBenchCmd(detect, env))

@@ -382,7 +382,7 @@ Nothing is uploaded anywhere.
 | NVIDIA | CUDA | Compute capability 5.0 or newer, detected through `nvidia-smi` |
 | AMD | ROCm | Only ROCm-supported gfx targets are treated as GPU |
 | Apple Silicon | Metal | Unified memory; M1 through current chips |
-| Intel GPUs, unsupported AMD GPUs | none | Estimated as CPU; Ollama's Vulkan backend may do better |
+| Intel GPUs, unsupported AMD GPUs | none | Estimated as CPU; pass `--vulkan` to estimate on Ollama's experimental Vulkan backend (needs `OLLAMA_VULKAN=1`) |
 | CPU only | none | Estimated from system RAM bandwidth |
 
 Platforms: Linux, macOS and Windows, on amd64 and arm64. If a GPU is not in the

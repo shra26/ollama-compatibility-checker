@@ -14,6 +14,7 @@ const (
 	runtimeOverhead = 512 << 20 // 512 MiB
 	vramHeadroom    = 0.9       // keep 10% of VRAM free
 	ramExcludeFrac  = 0.8       // models needing more than this share of RAM are excluded
+	vulkanEffFactor = 0.6       // Vulkan reaches a smaller share of bandwidth than CUDA/Metal/ROCm
 )
 
 // Params tunes the estimator.
@@ -35,6 +36,9 @@ func DefaultParams() Params {
 func (p Params) gpuEff(g hw.GPU) float64 {
 	if f, ok := p.Fitted[g.Backend]; ok && f.Eff > 0 {
 		return f.Eff
+	}
+	if g.Backend == "vulkan" {
+		return p.EffGPU * vulkanEffFactor
 	}
 	return p.EffGPU
 }
